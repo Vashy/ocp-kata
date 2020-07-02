@@ -1,8 +1,9 @@
-package it.xpug.ocp.checkout;
+package it.xpug.ocp.checkout
 
-import static org.junit.Assert.*;
-
-import org.junit.*;
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Test
 
 /*
 Back to the Checkout
@@ -16,74 +17,94 @@ Item   Unit      Special
   C     20
   D     15
 */
-public class CheckoutTest {
+class CheckoutTest {
+    private lateinit var checkout: SimpleCheckout
 
-	private CheckOut checkOut;
+    @Before
+    fun setUp() {
+        checkout = SimpleCheckout()
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		checkOut = new CheckOut();
-	}
+    @Test
+    fun `one A should cost 50`() {
+        val checkOut = Factory.create()
 
-	@Test
-	public void oneKindOfItem() throws Exception {
-		assertEquals(0, checkOut.total());
-		checkOut.scan("A");
-		assertEquals(50, checkOut.total());
-		checkOut.scan("A");
-		assertEquals(50 + 50, checkOut.total());
-	}
+        assertEquals(0, checkOut.total)
+        checkOut.scan("A")
+        assertEquals(50, checkOut.total)
+    }
 
-	@Test@Ignore
-	public void twoKindsOfItems() throws Exception {
-		checkOut.scan("A");
-		assertEquals(50, checkOut.total());
-		checkOut.scan("B");
-		assertEquals(50 + 30, checkOut.total());
-	}
+    @Test
+    fun `two A should cost 100`() {
+        val checkOut = Factory.create()
 
-	@Test@Ignore
-	public void threeKindsOfItems() throws Exception {
-		checkOut.scan("A");
-		assertEquals(50, checkOut.total());
-		checkOut.scan("B");
-		assertEquals(50 + 30, checkOut.total());
-		checkOut.scan("C");
-		assertEquals(50 + 30 + 20, checkOut.total());
-	}
+        assertEquals(0, checkOut.total)
+        checkOut.scan("A")
+        assertEquals(50, checkOut.total)
+        checkOut.scan("A")
+        assertEquals(50 + 50, checkOut.total)
+    }
 
-	@Test@Ignore
-	public void specialOffer() throws Exception {
-		checkOut.scan("A");
-		checkOut.scan("A");
-		checkOut.scan("A");
-		assertEquals(130, checkOut.total());
-		checkOut.scan("A");
-		assertEquals(130 + 50, checkOut.total());
-	}
+    @Test
+    fun `sum different units`() {
+        val checkOut = Factory.create(mapOf("A" to 50, "B" to 30))
 
-	@Test@Ignore
-	public void anotherSpecialOffer() throws Exception {
-		checkOut.scan("B");
-		checkOut.scan("B");
-		assertEquals(45, checkOut.total());
-		checkOut.scan("B");
-		checkOut.scan("B");
-		assertEquals(45 + 45, checkOut.total());
-	}
+        checkOut.scan("A")
+        assertEquals(50, checkOut.total)
+        checkOut.scan("B")
+        assertEquals(50 + 30, checkOut.total)
+    }
 
-	@Test@Ignore
-	public void thisIsDifficult() throws Exception {
-		// One more variation:
-		// "E" costs 55.
-		// But it costs just 19 if you have bought two of "C".
-		// This is probably going to be difficult!
-		checkOut.scan("E");
-		assertEquals(55, checkOut.total());
-		checkOut.scan("C");
-		assertEquals(55 + 20, checkOut.total());
-		checkOut.scan("C");
-		assertEquals(19 + 20 + 20, checkOut.total());
-	}
+    @Test
+    fun `three kinds of items`() {
+        val checkout = Factory.create(mapOf(
+                "A" to 50,
+                "B" to 30,
+                "C" to 20,
+        ))
 
+        checkout.scan("A")
+        assertEquals(50, checkout.total)
+        checkout.scan("B")
+        assertEquals(50 + 30, checkout.total)
+        checkout.scan("C")
+        assertEquals(50 + 30 + 20, checkout.total)
+    }
+
+    @Test
+    @Ignore
+    fun specialOffer() {
+        checkout.scan("A")
+        checkout.scan("A")
+        checkout.scan("A")
+        assertEquals(130, checkout.total)
+        checkout.scan("A")
+        assertEquals(130 + 50, checkout.total)
+    }
+
+    @Test
+    @Ignore
+    fun anotherSpecialOffer() {
+        checkout.scan("B")
+        checkout.scan("B")
+        assertEquals(45, checkout.total)
+        checkout.scan("B")
+        checkout.scan("B")
+        assertEquals(45 + 45, checkout.total)
+    }
+
+    @Test
+    @Ignore
+    fun thisIsDifficult() {
+        // One more variation:
+        // "E" costs 55.
+        // But it costs just 19 if you have bought two of "C".
+        // This is probably going to be difficult!
+        checkout.scan("E")
+        assertEquals(55, checkout.total)
+        checkout.scan("C")
+        assertEquals(55 + 20, checkout.total)
+        checkout.scan("C")
+        assertEquals(19 + 20 + 20, checkout.total)
+    }
 }

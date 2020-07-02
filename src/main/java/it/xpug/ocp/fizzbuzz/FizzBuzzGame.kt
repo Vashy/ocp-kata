@@ -1,9 +1,13 @@
-package it.xpug.ocp.fizzbuzz;
+package it.xpug.ocp.fizzbuzz
 
-public class FizzBuzzGame {
+interface FizzBuzzGame {
+    fun say(): String
+}
 
-	public String say(int number) {
-		return null;
-	}
-
+object FizzBuzzFactory {
+    fun create(number: Int): FizzBuzzGame {
+        return object : FizzBuzzGame {
+            override fun say(): String = number.toString()
+        }
+    }
 }
