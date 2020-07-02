@@ -72,8 +72,10 @@ class CheckoutTest {
     }
 
     @Test
-    @Ignore
-    fun specialOffer() {
+    fun `special offer`() {
+        val checkout = Factory.create(listOf(
+                Product("A", 50, 3, 20)
+        ))
         checkout.scan("A")
         checkout.scan("A")
         checkout.scan("A")
