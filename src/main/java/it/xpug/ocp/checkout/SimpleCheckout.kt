@@ -1,21 +1,24 @@
 package it.xpug.ocp.checkout
 
+interface Valuable {
+    fun cost(): Int
+}
+
 class Product(
         val id: String,
-        cost: Int,
+        private val value: Int,
         private var discountThreshold: Int,
         private val discount: Int
-) {
+) : Valuable {
     private var count = 0
 
-    val cost = cost
-        get() {
+    override fun cost(): Int {
             count++
             return if (count == discountThreshold) {
                 count = 0
-                field - discount
+                value - discount
             } else
-                field
+                value
         }
 }
 
@@ -59,7 +62,7 @@ class ProductCheckout(private val products: List<Product>) : Checkout {
         private set
 
     override fun scan(code: String) {
-        total += products.find { it.id == code }?.cost ?: throw IllegalArgumentException("Invalid code $code")
+        total += products.find { it.id == code }?.cost() ?: throw IllegalArgumentException("Invalid code $code")
     }
 }
 
