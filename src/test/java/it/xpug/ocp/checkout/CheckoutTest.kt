@@ -74,7 +74,7 @@ class CheckoutTest {
     @Test
     fun `special offer`() {
         val checkout = Factory.create(listOf(
-                Product("A", 50, 3, 20)
+                DiscountableProduct("A", 50, 3, 20)
         ))
         checkout.scan("A")
         checkout.scan("A")
@@ -87,7 +87,7 @@ class CheckoutTest {
     @Test
     fun `another special offer`() {
         val checkout = Factory.create(listOf(
-                Product("B", 30, 2, 15)
+                DiscountableProduct("B", 30, 2, 15)
         ))
         checkout.scan("B")
         checkout.scan("B")

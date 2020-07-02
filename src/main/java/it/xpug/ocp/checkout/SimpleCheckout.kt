@@ -4,22 +4,28 @@ interface Valuable {
     fun cost(): Int
 }
 
-class Product(
-        val id: String,
+interface Id {
+    val id: String
+}
+
+interface Product: Valuable, Id
+
+class DiscountableProduct(
+        override val id: String,
         private val value: Int,
         private var discountThreshold: Int,
         private val discount: Int
-) : Valuable {
-    private var count = 0
+) : Product {
+    private var boughtCount = 0
 
     override fun cost(): Int {
-            count++
-            return if (count == discountThreshold) {
-                count = 0
-                value - discount
-            } else
-                value
-        }
+        boughtCount++
+        return if (boughtCount == discountThreshold) {
+            boughtCount = 0
+            value - discount
+        } else
+            value
+    }
 }
 
 interface Checkout {
