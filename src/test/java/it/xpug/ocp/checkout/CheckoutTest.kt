@@ -85,8 +85,10 @@ class CheckoutTest {
     }
 
     @Test
-    @Ignore
-    fun anotherSpecialOffer() {
+    fun `another special offer`() {
+        val checkout = Factory.create(listOf(
+                Product("B", 30, 2, 15)
+        ))
         checkout.scan("B")
         checkout.scan("B")
         assertEquals(45, checkout.total)
