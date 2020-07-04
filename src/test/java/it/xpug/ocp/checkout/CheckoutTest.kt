@@ -98,12 +98,12 @@ class CheckoutTest {
     }
 
     @Test
-    @Ignore
-    fun thisIsDifficult() {
+    fun `this is difficult`() {
         // One more variation:
         // "E" costs 55.
         // But it costs just 19 if you have bought two of "C".
         // This is probably going to be difficult!
+        val checkout = Factory.createComplexCheckout(55, 19, 20)
         checkout.scan("E")
         assertEquals(55, checkout.total)
         checkout.scan("C")

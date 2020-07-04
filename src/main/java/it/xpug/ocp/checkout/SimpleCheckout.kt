@@ -8,7 +8,7 @@ interface Id {
     val id: String
 }
 
-interface Product: Valuable, Id
+interface Product : Valuable, Id
 
 class DiscountableProduct(
         override val id: String,
@@ -83,4 +83,32 @@ object Factory {
     fun create(products: List<Product>): Checkout {
         return ProductCheckout(products)
     }
+
+    fun createComplexCheckout(ePrice: Int, eDiscountedPrice: Int, cPrice: Int): Checkout {
+        return ComplexCheckout(ePrice, eDiscountedPrice, cPrice)
+    }
+}
+
+class ComplexCheckout(private val ePrice: Int, private val eDiscountedPrice: Int, private val cPrice: Int) : Checkout {
+    private val scannedProducts = mutableMapOf<String, Int>()
+
+    override val total: Int
+        get() {
+            val isDiscounted = scannedProducts["C"] ?: 0 >= 2
+            var sum = 0
+            scannedProducts.forEach { (key, value) ->
+                sum += when {
+                    key == "E" && isDiscounted -> eDiscountedPrice * value
+                    key == "E" -> ePrice * value
+                    key == "C" -> cPrice * value
+                    else -> 0
+                }
+            }
+            return sum
+        }
+
+    override fun scan(code: String) {
+        scannedProducts.merge(code, 1) { _, value -> value + 1 }
+    }
+
 }
