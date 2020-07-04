@@ -1,4 +1,4 @@
-package it.xpug.ocp.checkout
+package it.vashykator.checkout
 
 import org.junit.Assert.assertEquals
 import org.junit.Before

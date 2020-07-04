@@ -1,4 +1,4 @@
-package it.xpug.ocp.checkout
+package it.vashykator.checkout
 
 interface Valuable {
     fun cost(): Int
@@ -39,18 +39,6 @@ class SimpleCheckout : Checkout {
 
     override fun scan(code: String) {
         this.total += 50
-    }
-}
-
-class TwoProductsCheckout : Checkout {
-    override var total: Int = 0
-        private set
-
-    override fun scan(code: String) {
-        when (code) {
-            "A" -> total += 50
-            "B" -> total += 30
-        }
     }
 }
 
