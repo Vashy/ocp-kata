@@ -1,38 +1,5 @@
 package it.vashykator.checkout
 
-interface Valuable {
-    fun cost(): Int
-}
-
-interface Id {
-    val id: String
-}
-
-interface Product : Valuable, Id
-
-class DiscountableProduct(
-        override val id: String,
-        private val value: Int,
-        private var discountThreshold: Int,
-        private val discount: Int
-) : Product {
-    private var boughtCount = 0
-
-    override fun cost(): Int {
-        boughtCount++
-        return if (boughtCount == discountThreshold) {
-            boughtCount = 0
-            value - discount
-        } else
-            value
-    }
-}
-
-interface Checkout {
-    val total: Int
-    fun scan(code: String)
-}
-
 class SimpleCheckout : Checkout {
     override var total: Int = 0
         private set
@@ -57,23 +24,6 @@ class ProductCheckout(private val products: List<Product>) : Checkout {
 
     override fun scan(code: String) {
         total += products.find { it.id == code }?.cost() ?: throw IllegalArgumentException("Invalid code $code")
-    }
-}
-
-object Factory {
-    fun create(availableProducts: Map<String, Int> = mapOf()): Checkout {
-        return if (availableProducts.isEmpty())
-            SimpleCheckout()
-        else
-            MultiProductsCheckout(availableProducts)
-    }
-
-    fun create(products: List<Product>): Checkout {
-        return ProductCheckout(products)
-    }
-
-    fun createComplexCheckout(ePrice: Int, eDiscountedPrice: Int, cPrice: Int): Checkout {
-        return ComplexCheckout(ePrice, eDiscountedPrice, cPrice)
     }
 }
 
